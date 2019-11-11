@@ -26,15 +26,8 @@
 </head>
 
 <body>
-  {# FLASH MESSAGESS #}
-  {% with messages = get_flashed_messages() %}
-  {% for message in messages %}
-  <p>{{ message }}</p>
-  {% endfor %}
-  {% endwith %}
 
-  {# NavBAR #}
-  {% include 'navbar.html' %}
+  {# NavBAR #}{% include 'navbar.html' %}
   {% block content %}
   {% endblock %}
   <footer>

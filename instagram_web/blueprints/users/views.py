@@ -18,15 +18,18 @@ def create():
         email=request.form.get('user_email'),
         password=generate_password_hash(request.form.get('user_password'))
     )
+
     if user_input.save():
-        flash("successfully created user")
+        flash(
+            f" Dear {user_input.username}, account has successfully created", 'success')
         return redirect(url_for('users.create'))
     else:
-        return render_template(url_for('users.new'),
+        return render_template('users/new.html',
                                username=request.form.get('user_username'),
                                email=request.form.get('user_email'),
                                password=generate_password_hash(
-                                   request.form.get('user_password'))
+                                   request.form.get('user_password')),
+                               errors=user_input.errors
                                )
 
 

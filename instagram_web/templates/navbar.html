@@ -32,3 +32,14 @@
         </form>
     </div>
 </nav>
+<div>
+    {# FLASH MESSAGESS #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category,message in messages %}
+    <h6 class="alert alert-{{category}}">{{ message }}</h6>
+    {% endfor %}
+    {% endwith %}
+    {% for error in errors if errors|length > 0 %}
+    <h6>{{error}}</h6>
+    {%endfor%}
+</div>
