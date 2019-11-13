@@ -5,16 +5,16 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        {% if session['user_id'] %}
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/users/new">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/users/new">Sign Up</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/sessions/new">Sign In</a>
+                <form action="{{url_for("sessions.destroy")}}" method="GET">
+                    <button type="submit" class="btn btn-link nav-link">Sign Out </button>
+                </form>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -28,21 +28,39 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        {% else %}
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/users/new">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/sessions/new">Sign In</a>
+            </li>
+
+
+        </ul>
+
+        {% endif %}
     </div>
 </nav>
 <div>
     {# FLASH MESSAGESS #}
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category,message in messages %}
-    <h6 class="alert alert-{{category}}">{{ message }}</h6>
+    <h6 class="alert alert-{{category}}">{{ message }}<button type="button" class="close" data-dismiss="alert"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button></h6>
     {% endfor %}
     {% endwith %}
+
     {% for error in errors if errors|length > 0 %}
     <h6>{{error}}</h6>
     {%endfor%}
+
 </div>

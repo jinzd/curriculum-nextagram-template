@@ -11,7 +11,7 @@
 <div class="container my-3">
     <div class="d-block">
         <form method="POST" action="{{ url_for('sessions.login') }}">
-            <!-- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <!-- <div class="form-group">
                 <label for="Username">Username</label>
                 <input name="user_username" type="Username" class="form-control" aria-describedby="UsernameHelp"
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group form-check">
                 <small class="form-text text-muted"></small>
-                <div class=""><button class="btn btn-primary" type="submit">Sign Up</button></div>
+                <div class=""><button class="btn btn-primary" type="submit">Sign In</button></div>
         </form>
     </div>
 </div>

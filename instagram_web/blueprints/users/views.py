@@ -15,22 +15,22 @@ def new():
 @users_blueprint.route('/', methods=['POST'])
 def create():
 
-    user_input = User(
-        username=request.form.get('user_username'),
-        email=request.form.get('user_email'),
-        password=generate_password_hash(request.form.get('user_password')
-                                        ))
+    user_password = request.form['user_password']
     password_validate = re.match(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})", user_input.password)
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})", user_password)
 
     if password_validate:
+        hashed_password = generate_password_hash(user_password)
+        user_input = User(username=request.form.get(
+            'user_username'), email=request.form.get('user_email'), password=hashed_password)
         if user_input.save():
             flash(
                 f" Dear {user_input.username}, account has successfully created", 'success')
-            return redirect(url_for('users.create'))
+            return redirect(url_for('sessions.new'))
         else:
             return render_template('users/new.html',
-                                   username=request.form.get('user_username'),
+                                   username=request.form.get(
+                                       'user_username'),
                                    email=request.form.get('user_email'),
                                    password=generate_password_hash(
                                        request.form.get('user_password')),
@@ -38,6 +38,7 @@ def create():
                                    )
     else:
         flash("Your password must: be a minimum of 8 or more characters. include a minimum of three of the following mix of character types: uppercase, lowercase, numbers, non-alphanumeric symbols, for example not be identical to your NEXTAGRAM account name or email address")
+        return render_template('users/new.html')
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
