@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
+from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from models.user import User
 import re
@@ -7,7 +8,7 @@ users_blueprint = Blueprint('users',
                             template_folder='templates')
 
 
-@users_blueprint.route('/new', methods=['GET'])
+@users_blueprint.route('/new_account', methods=['GET'])
 def new():
     return render_template('users/new.html')
 
@@ -47,16 +48,30 @@ def show(username):
 
 
 @users_blueprint.route('/', methods=["GET"])
+@login_required
 def index():
     return render_template('users/new.html')
     # "USERS done"
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
-    pass
+    user = User.get_or_none(User.id == id)
+
+    if not user:
+        return redirect(url_for('sessions.new'))
+
+    return render_template('users/edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    user = User.get_or_none(User.id == id)
+    if current_user == user:  # current_user method is from Flask-Login
+        current_user.username = request.form["up_username"]
+        current_user.email = request.form["up_email"]
+        if current_user.save():
+            flash("please change the contain before click submit")
+            return redirect(url_for('users.edit', id=id))
+    return redirect(url_for('users.edit', id=id))

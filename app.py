@@ -1,7 +1,8 @@
-from flask_wtf.csrf import CSRFProtect
 import os
 import config
+import click
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from models.base_model import db
 from models.user import User
@@ -18,8 +19,8 @@ csrf = CSRFProtect(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'sessions.new'
-login_manager.login_message = u"Bonvolu ensaluti por uzi tiun paĝon."
-login_manager.login_message_category = "info"
+login_manager.login_message = u"Login is required"
+login_manager.login_message_category = "danger"
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")

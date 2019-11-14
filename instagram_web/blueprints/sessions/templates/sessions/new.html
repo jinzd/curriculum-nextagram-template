@@ -10,7 +10,7 @@
 {%block content%}
 <div class="container my-3">
     <div class="d-block">
-        <form method="POST" action="{{ url_for('sessions.login') }}">
+        <form method="POST" action="{{ url_for('sessions.create') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <!-- <div class="form-group">
                 <label for="Username">Username</label>

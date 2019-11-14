@@ -1,4 +1,7 @@
+$bg-color: rgb(255, 255, 255); // libsass sample
+
 body {
+  background-color: $bg-color;
   margin: 0;
   padding-bottom: 15px;
   position: relative;

@@ -15,6 +15,7 @@ bundles = {
         'css/custom.scss',
         # filters='cssmin',
         filters='libsass',
+        depends=['css/*.scss'],
         output='gen/home.%(version)s.css'),
 
     # 'admin_js': Bundle(

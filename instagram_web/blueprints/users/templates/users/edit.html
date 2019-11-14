@@ -1,15 +1,53 @@
 {%extends "_layout.html"%}
 
 {%block content%}
-<h1>Upload Your Files Bro</h1>
+<div class=" container justify-content-center">
+    <div class=" container">
+        <form action="{{url_for('users.update', id=user.id)}}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input name="up_username" value="{{current_user.username}}" type="text" class="form-control"
+                    placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input name="up_email" value="{{current_user.email}}" type="email" class="form-control"
+                    aria-describedby="emailHelp" placeholder="Enter email">
+                <!-- <small id=" emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small> -->
+            </div>
+            <!-- <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input name="up_password" type="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password">
+            </div> -->
+            <!-- <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div> -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
-<form action="/" method="POST" enctype="multipart/form-data">
+    </div>
+    <div class=" container">
+        <form action="/<id>/edit" method="POST" enctype="multipart/form-data">
+            <h4 class="d-block">Upload Your Files Bro</h4>
+            <br></br>
+            <br></br>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <br></br>
+            <br></br>
+            <!-- <label for="user_file">Upload Your File</label>
+            <br></br>
+            <input class="btn" type="file" name="user_file">
+            <br></br> -->
+            <button class="btn btn-primary" type="submit">Upload</button>
 
-    <label for="user_file">Upload Your File</label>
-    <br></br>
-    <input type="file" name="user_file">
-    <br></br>
-    <button type="submit">Upload</button>
-
-</form>
+        </form>
+    </div>
+</div>
 {%endblock%}

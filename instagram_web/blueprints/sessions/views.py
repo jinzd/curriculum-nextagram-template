@@ -8,13 +8,14 @@ sessions_blueprint = Blueprint('sessions',
                                template_folder='templates')
 
 
-@sessions_blueprint.route('/new', methods=['GET'])
+@sessions_blueprint.route('/new', methods=['GET'])  # done
+# @login_required
 def new():
     return render_template('sessions/new.html')
 
 
-@sessions_blueprint.route('/', methods=['POST'])
-def login():
+@sessions_blueprint.route('/', methods=['POST'])  # done
+def create():
 
     user = User.get_or_none(
         User.email == request.form['signin_email'])
@@ -41,19 +42,19 @@ def show(username):
 
 
 @sessions_blueprint.route('/', methods=["GET"])
+@login_required
 def index():
     # pass
-    return render_template('sessions.new.html')
+    return render_template('sessions/new.html')
     # "sessions done"
 
 
 @sessions_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
     pass
-#     user = User.get_by_id(id)
+    #     user = User.get_by_id(id)
 
-
-# if current_user == user:
+    # if current_user == user:
 
 
 @sessions_blueprint.route('/<id>', methods=['POST'])
@@ -61,7 +62,7 @@ def update(id):
     pass
 
 
-@sessions_blueprint.route("/destroy", methods=['GET'])
+@sessions_blueprint.route("/destroy", methods=['GET'])  # done
 @login_required
 def destroy():
     logout_user()
