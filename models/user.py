@@ -2,6 +2,8 @@ from flask import request, flash
 from flask_login import UserMixin
 from models.base_model import BaseModel
 from peewee_validates import ModelValidator
+from playhouse.hybrid import hybrid_property
+from config import Config
 import peewee as pw
 import re
 
@@ -26,3 +28,10 @@ class User(BaseModel, UserMixin):
             # duplicate_emails = User.get_or_none(User.email == self.email)
             # if duplicate_emails:
             #     self.errors.append('This email address is already being used')
+    @hybrid_property
+    def profile_image_url(self):
+        if self.profile_picture:
+            print("fuck")
+            return f"{Config.S3_LOCATION}{self.profile_picture}"
+        else:
+            return ""

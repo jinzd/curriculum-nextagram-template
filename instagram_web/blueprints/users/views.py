@@ -65,7 +65,7 @@ def edit(id):
     if not user:
         return redirect(url_for('sessions.new'))
 
-    return render_template('users/edit.html', user=user)
+    return render_template('users/edit.html', user=user, profile_picture=current_user.profile_image_url)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
@@ -97,6 +97,14 @@ def up_image():
     print(file.mimetype)
 
     if file and allowed_file(file.filename):
-        flash('thank bitch',"success")
-    else: flash('wrong file','danger')
+        upload_file_to_s3(file)
+        u_p = User.update(profile_picture=file.filename).where(
+            current_user.id == User.id)
+        # User.update({profile_picture: file})
+        if u_p.execute():
+            flash('thank bitch', "success")
+            return redirect(url_for('users.edit', id=current_user.id))
+    else:
+        flash('wrong file', 'danger')
+        return redirect(url_for('users.edit', id=current_user.id))
     return redirect(url_for('users.edit', id=current_user.id))

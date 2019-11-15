@@ -10,7 +10,7 @@ s3 = boto3.client(
 )
 
 
-def upload_file_to_s3(file, Config, acl="public-read"):
+def upload_file_to_s3(file, acl="public-read"):
 
     try:
 

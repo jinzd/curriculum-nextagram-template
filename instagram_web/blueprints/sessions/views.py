@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
+from instagram_web.helpers.google_oauth import oauth
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
 from flask_login import current_user, login_user, logout_user, login_required
@@ -34,6 +35,31 @@ def create():
     else:
         flash("no such user", "danger")
         return redirect(url_for('sessions.new'))
+
+
+@sessions_blueprint.route('/login/google', methods=["GET"])
+def google_login():
+    redirect_uri = url_for('sessions.authorize_google', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+@sessions_blueprint.route('/authorize/google', methods=["GET"])
+def authorize_google():
+    token = oauth.google.authorize_access_token()
+    if not token:
+        flash('Oops, some shit din happen', 'danger')
+        return redirect(url_for('home'))
+
+    email = oauth.google.get(
+        'https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+
+    user = User.get_or_none(User.email == email)
+    if not user:
+        flash('Sorry, no account registern', 'danger')
+        return redirect(url_for('home'))
+    login_user(user)
+    flash(f'Welcome {current_user.username}', 'success')
+    return redirect(url_for('home'))
 
 
 @sessions_blueprint.route('/<username>', methods=["GET"])
