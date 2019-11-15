@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 from models.user import User
 import re
+from instagram_web.util.helper import upload_file_to_s3
+
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
@@ -66,6 +69,7 @@ def edit(id):
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
+@login_required
 def update(id):
     user = User.get_or_none(User.id == id)
     if current_user == user:  # current_user method is from Flask-Login
@@ -74,4 +78,25 @@ def update(id):
         if current_user.save():
             flash("please change the contain before click submit")
             return redirect(url_for('users.edit', id=id))
-    return redirect(url_for('users.edit', id=id))
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@users_blueprint.route('/upshit', methods=['POST'])
+@login_required
+def up_image():
+    file = request.files["user_pro_pic"]
+    print(file.filename)               # The actual name of the file
+    print(file.content_type)
+    print(file.content_length)
+    print(file.mimetype)
+
+    if file and allowed_file(file.filename):
+        flash('thank bitch',"success")
+    else: flash('wrong file','danger')
+    return redirect(url_for('users.edit', id=current_user.id))

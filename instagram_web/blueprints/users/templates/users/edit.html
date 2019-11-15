@@ -31,20 +31,21 @@
 
     </div>
     <div class=" container">
-        <form action="/<id>/edit" method="POST" enctype="multipart/form-data">
+        <form action="{{url_for('users.up_image')}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <h4 class="d-block">Upload Your Files Bro</h4>
-            <br></br>
-            <br></br>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile">
-                <label class="custom-file-label" for="customFile">Choose file</label>
-            </div>
-            <br></br>
-            <br></br>
-            <!-- <label for="user_file">Upload Your File</label>
-            <br></br>
-            <input class="btn" type="file" name="user_file">
+            <!-- <br></br>
             <br></br> -->
+            <!-- <div class="custom-file">
+                <input name="user_pro_pic" type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div> -->
+            <!-- <br></br>
+            <br></br> -->
+            <label for="user_file">Upload Your File</label>
+            <br></br>
+            <input name="user_pro_pic" class="btn" type="file" name="user_file">
+            <br></br>
             <button class="btn btn-primary" type="submit">Upload</button>
 
         </form>
